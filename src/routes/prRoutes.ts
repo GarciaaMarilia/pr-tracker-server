@@ -49,11 +49,52 @@ PrRouter.post(
 
    res.status(201).json({ message: "PR registered", pr });
   } catch (error) {
-   console.error(error);
    res.status(500).json({ message: "Error registering PR", error });
   }
  }
 );
+
+PrRouter.get("/list", async (req: Request, res: Response): Promise<any> => {
+ const { token, type, exercise } = req.body;
+
+ try {
+  if (!token || !type || !exercise) {
+   return res.status(400).json({ message: "All fields are required" });
+  }
+
+  const decoded = jwt.verify(token, "default_jwt_secret") as {
+   userId: string;
+  };
+
+  if (!decoded.userId) {
+   return res.status(400).json({ message: "UserId is required" });
+  }
+
+  const prs = await PR.find({
+   user: decoded.userId,
+   type: type,
+   exercise: exercise,
+  });
+
+  if (prs.length === 0) {
+   return res.status(404).json({ message: "No PRs found" });
+  }
+
+  const prsResult = {
+   user: decoded.userId,
+   type: type,
+   exercise: exercise,
+   data: prs.map((pr) => ({
+    date: pr.date,
+    value: pr.value,
+   })),
+  };
+
+  res.status(200).json({ message: "PRs retrieved successfully", prsResult });
+ } catch (error) {
+  res.status(500).json({ message: "Error listing PRs", error });
+ }
+});
 
 PrRouter.put(
  "/update/:id",
@@ -95,7 +136,6 @@ PrRouter.put(
 
    res.status(200).json({ message: "PR updated successfully", updatedPr });
   } catch (error) {
-   console.error(error);
    res.status(500).json({ message: "Error updating PR", error });
   }
  }
@@ -117,7 +157,6 @@ PrRouter.delete(
 
    res.status(200).json({ message: "PR deleted successfully" });
   } catch (error) {
-   console.error(error);
    res.status(500).json({ message: "Error deleting PR", error });
   }
  }
