@@ -1,16 +1,24 @@
+import cors from "cors";
+import dotenv from "dotenv";
 import express, { Request, Response } from "express";
+
+import Authrouter from "./routes/authRoutes";
 import { connectDB } from "./config/dbConfig";
 
-const app = express();
-const port = 3000;
+dotenv.config();
+connectDB();
 
+const app = express();
+app.use(cors());
 app.use(express.json());
 
-connectDB();
+app.use("/auth", Authrouter);
 
 app.get("/", (req: Request, res: Response) => {
  res.send("Server running!");
 });
+
+const port = process.env.PORT;
 
 app.listen(port, () => {
  console.log("Server running!");

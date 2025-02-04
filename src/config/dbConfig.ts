@@ -6,7 +6,7 @@ dotenv.config();
 const MONGO_URI = process.env.STRING_CONNEXION;
 
 if (!MONGO_URI) {
- throw new Error("❌ MONGO_URI is not defined!");
+ throw new Error("MONGO_URI is not defined!");
 }
 
 export const connectDB = async () => {
