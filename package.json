@@ -1,0 +1,27 @@
+{
+ "name": "pr-tracker-server",
+ "version": "1.0.0",
+ "main": "index.js",
+ "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "ts-node src/server.ts"
+ },
+ "keywords": [],
+ "author": "",
+ "license": "ISC",
+ "description": "",
+ "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+ "dependencies": {
+  "dotenv": "^16.4.7",
+  "express": "^4.21.2",
+  "mongoose": "^8.9.6"
+ },
+ "devDependencies": {
+  "@types/express": "^5.0.0",
+  "@types/mongoose": "^5.11.97",
+  "@types/node": "^22.13.1",
+  "nodemon": "^3.1.9",
+  "ts-node": "^10.9.2",
+  "typescript": "^5.7.3"
+ }
+}
