@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 
+import PrRouter from "./routes/prRoutes";
 import Authrouter from "./routes/authRoutes";
 import { connectDB } from "./config/dbConfig";
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/auth", Authrouter);
+app.use("/pr", PrRouter);
 
 app.get("/", (req: Request, res: Response) => {
  res.send("Server running!");
