@@ -152,10 +152,7 @@ PrRouter.delete(
 
    if (result.deletedCount === 0) {
     return res.status(404).json({ message: "PR not found." });
-   } else {
-    console.log("PR deleted successfully.");
    }
-
    res.status(200).json({ message: "PR deleted successfully" });
   } catch (error) {
    res.status(500).json({ message: "Error deleting PR", error });
