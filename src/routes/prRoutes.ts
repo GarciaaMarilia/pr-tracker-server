@@ -54,7 +54,7 @@ PrRouter.post(
  }
 );
 
-PrRouter.get("/list", async (req: Request, res: Response): Promise<any> => {
+PrRouter.post("/list", async (req: Request, res: Response): Promise<any> => {
  const { token, type, exercise } = req.body;
 
  try {
@@ -74,7 +74,7 @@ PrRouter.get("/list", async (req: Request, res: Response): Promise<any> => {
    user: decoded.userId,
    type: type,
    exercise: exercise,
-  });
+  }).sort({ date: 1 });
 
   if (prs.length === 0) {
    return res.status(404).json({ message: "No PRs found" });
@@ -85,6 +85,7 @@ PrRouter.get("/list", async (req: Request, res: Response): Promise<any> => {
    type: type,
    exercise: exercise,
    data: prs.map((pr) => ({
+    id: pr.id,
     date: pr.date,
     value: pr.value,
    })),
