@@ -15,7 +15,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 1. Clonez le repository sur votre machine :
 
 ```ts
-git clone https://github.com/votre-utilisateur/pr-tracker-server.git
+git clone https://github.com/GarciaaMarilia/pr-tracker-server.git
 ```
 
 2. Accédez au répertoire du projet :
