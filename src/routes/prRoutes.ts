@@ -100,8 +100,8 @@ PrRouter.post("/list", async (req: Request, res: Response): Promise<any> => {
 PrRouter.put(
  "/update/:id",
  async (req: Request, res: Response): Promise<any> => {
-  const { token, type, exercise, value, date } = req.body;
   const { id } = req.params;
+  const { token, type, exercise, value, date } = req.body;
 
   try {
    const decoded = jwt.verify(token, "default_jwt_secret") as {
@@ -124,16 +124,16 @@ PrRouter.put(
      .json({ message: "You are not allowed to update this PR." });
    }
 
-   await PR.deleteOne({ _id: id });
-
-   const updatedPr = await PR.create({
-    _id: id,
-    user: decoded.userId,
-    type: (pr.type = type || pr.type),
-    exercise: (pr.exercise = exercise || pr.exercise),
-    value: (pr.value = value || pr.value),
-    date: (pr.date = date || pr.date),
-   });
+   const updatedPr = await PR.findByIdAndUpdate(
+    id,
+    {
+     type: type || pr.type,
+     exercise: exercise || pr.exercise,
+     value: value || pr.value,
+     date: date || pr.date,
+    },
+    { new: true }
+   );
 
    res.status(200).json({ message: "PR updated successfully", updatedPr });
   } catch (error) {
