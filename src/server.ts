@@ -2,8 +2,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 
-import PrRouter from "./routes/prRoutes";
-import Authrouter from "./routes/authRoutes";
+import PrRouter from "./routes/pr-routes";
+import Authrouter from "./routes/auth-routes";
 import { connectDB } from "./config/dbConfig";
 
 dotenv.config();
@@ -19,6 +19,10 @@ app.use("/pr", PrRouter);
 app.get("/", (req: Request, res: Response) => {
  res.send("Server running!");
 });
+
+// app.get("/*", (res: Response) => {
+//  res.send("Not found");
+// });
 
 const port = process.env.PORT;
 
