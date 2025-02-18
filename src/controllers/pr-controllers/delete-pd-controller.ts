@@ -6,6 +6,10 @@ export async function deletePr(req: Request, res: Response): Promise<any> {
  const { id } = req.params;
 
  try {
+  if (!req.user || !req.user.userId) {
+   return res.status(401).json({ message: "Unauthorized" });
+  }
+
   const result = await PR.deleteOne({ _id: id });
 
   if (result.deletedCount === 0) {

@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
 import { PRType } from "./types";
@@ -6,15 +5,11 @@ import { PR } from "../../models/personal-records";
 
 export async function UpdatePr(req: Request, res: Response): Promise<any> {
  const { id } = req.params;
- const { token, type, exercise, value, date } = req.body;
+ const { type, exercise, value, date } = req.body;
 
  try {
-  const decoded = jwt.verify(token, "default_jwt_secret") as {
-   userId: string;
-  };
-
-  if (!decoded.userId) {
-   return res.status(400).json({ message: "UserId is required" });
+  if (!req.user || !req.user.userId) {
+   return res.status(401).json({ message: "Unauthorized" });
   }
 
   const pr: PRType | null = await PR.findById(id);
@@ -23,7 +18,7 @@ export async function UpdatePr(req: Request, res: Response): Promise<any> {
    return res.status(404).json({ message: "PR not found." });
   }
 
-  if (pr.user.toString() !== decoded.userId) {
+  if (pr.user.toString() !== req.user.userId) {
    return res
     .status(403)
     .json({ message: "You are not allowed to update this PR." });

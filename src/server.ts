@@ -20,9 +20,9 @@ app.get("/", (req: Request, res: Response) => {
  res.send("Server running!");
 });
 
-// app.get("/*", (res: Response) => {
-//  res.send("Not found");
-// });
+app.use((req: Request, res: Response) => {
+ res.status(404).json({ message: "Page not found 😕" });
+});
 
 const port = process.env.PORT;
 

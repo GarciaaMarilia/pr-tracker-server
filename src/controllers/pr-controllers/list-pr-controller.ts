@@ -1,26 +1,21 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
 import { PR } from "../../models/personal-records";
 
 export async function listPr(req: Request, res: Response): Promise<any> {
- const { token, type, exercise } = req.body;
-
  try {
-  if (!token || !type || !exercise) {
+  const { type, exercise } = req.body;
+
+  if (!req.user || !req.user.userId) {
+   return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  if (!type || !exercise) {
    return res.status(400).json({ message: "All fields are required" });
   }
 
-  const decoded = jwt.verify(token, "default_jwt_secret") as {
-   userId: string;
-  };
-
-  if (!decoded.userId) {
-   return res.status(400).json({ message: "UserId is required" });
-  }
-
   const prs = await PR.find({
-   user: decoded.userId,
+   user: req.user.userId,
    type: type,
    exercise: exercise,
   }).sort({ date: 1 });
@@ -30,7 +25,7 @@ export async function listPr(req: Request, res: Response): Promise<any> {
   }
 
   const prsResult = {
-   user: decoded.userId,
+   user: req.user.userId,
    type: type,
    exercise: exercise,
    data: prs.map((pr) => ({
