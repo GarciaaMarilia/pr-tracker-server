@@ -31,7 +31,9 @@ export async function login(req: Request, res: Response): Promise<any> {
    expiresIn: "1h",
   });
 
-  return res.status(200).json({ token });
+  return res
+   .status(200)
+   .json({ token, user: { userId: user._id, name: user.name } });
  } catch (error) {
   res.status(200).send({ status: "error", error: error });
  }
